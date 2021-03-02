@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>보자보자 운송장 서비스</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <style>
+            .is-sub {
+                margin-top: 20px !important;
+                font-size: 18px;
+            }
+
+            .wrap-form {
+                width: 600px;
+                height: 350px;
+                margin: 100px auto;
+                border: 1px solid #8598cd;
+                padding: 30px;
+                border-radius: 5px;
+                background-color: white;
+            }
+
+            .control {
+                width: 500px;
+                margin: 10px auto;
+            }
+
+            .sign-in-button, .sign-up-button {
+                display: block;
+                width: 500px;
+                height: 35px;
+                margin: 30px auto;
+                color: white;
+                background-color: #476ad5;
+                font-weight: bold;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .sign-up-button {
+                background-color: white;
+                color: #476ad5;
+                border: 1px solid #476ad5;
+                text-align: center;
+                font-size: 15px;
+                padding: 7px;
+            }
+
+            .condition {
+                font-size: 11px;
+                margin: 0 20px;
+            }
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+        <script>
+            // 로그인
+            function sign_in() {
+                let username = $('#input-username').val()
+                let password = $('#input-password').val()
+
+                // id 입력하지 않았을 때 로직.
+                if (username == "") {
+                    $("#username-condition").text("아이디를 입력해주세요.").css({color: "red"});
+                    $("#input-username").focus();
+                    return;
+                } else {
+                    $("#username-condition").text("")
+                }
+
+                // pw 입력하지 않았을 때 로직.
+                if (password == "") {
+                    $("#password-condition").text("비밀번호를 입력해주세요.").css({color: "red"});
+                    $("#input-password").focus();
+                    return;
+                } else {
+                    $("#password-condition").text("")
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/sign_in",
+                    data: {
+                        username_give: username,
+                        password_give: password
+                    },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            $.cookie('mytoken', response['token'], {path: '/'});
+                            alert(response['msg']);
+                            window.location.replace("/"); // 조회 페이지로 이동(추후에 루트 바꿔야 됨)
+
+                        } else {
+                            alert(response['msg']);
+                            window.location.replace("/")
+                        }
+                    }
+                });
+            }
+
+            function sign_up() {
+                window.location.href="/sign_up"
+            }
+
+            {#$(document).ready(function (){#}
+            {#    $('#second-form').hide();#}
+
+        </script>
+
+    </head>
+    <body>
+
+        <section class="hero is-info">
+          <div class="hero-body">
+            <p class="title">
+              보자보자 운송장 서비스
+            </p>
+            <p class="subtitle is-sub">
+              내 운송장을 한꺼번에 모아 보세요.
+            </p>
+          </div>
+        </section>
+
+        <div id="first-form" class="wrap-form">
+            <div class="control">
+              <input id="input-username" class="input" type="text" placeholder="id">
+            </div>
+            <p id="username-condition" class="condition"></p>
+            <p></p>
+
+            <div class="control">
+              <input id="input-password" class="input" type="password" placeholder="Password">
+            </div>
+            <p id="password-condition" class="condition"></p>
+
+            <button class="sign-in-button" onclick="sign_in()">로그인</button>
+            <button class="sign-up-button" onclick="sign_up()">회원가입</button>
+        </div>
+
+
+    </body>
+</html>
