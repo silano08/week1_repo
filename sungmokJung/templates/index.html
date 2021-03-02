@@ -1,0 +1,153 @@
+<!Doctype html>
+<html lang="ko">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+
+        <!-- 구글폰트 -->
+        <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+
+        <title>스파르타코딩클럽 | 나홀로 메모장</title>
+
+        <!-- style -->
+        <style type="text/css">
+            * {
+                font-family: "Stylish", sans-serif;
+            }
+
+            .wrap {
+                width: 900px;
+                margin: auto;
+            }
+
+            .comment {
+                color: blue;
+                font-weight: bold;
+            }
+
+            #post-box {
+                width: 500px;
+                margin: 20px auto;
+                padding: 50px;
+                border: black solid;
+                border-radius: 5px;
+            }
+
+        </style>
+        <script>
+            $(document).ready(function () {
+                carrierInfo();
+            });
+
+            function openClose() {
+                if ($("#post-box").css("display") == "block") {
+                    $("#post-box").hide();
+                    $("#btn-post-box").text("포스팅 박스 열기");
+                } else {
+                    $("#post-box").show();
+                    $("#btn-post-box").text("포스팅 박스 닫기");
+                }
+            }
+
+            function registration() {
+                let carrier = $('#carrier-txt').val();
+                let number = $('#carrier-number').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/registration",
+                    data: {carrier_give: carrier, number_give: number},
+                    success: function (response) { // 성공하면
+                        alert(response["msg"]);
+                        window.location.reload();
+                        // window.location.href='/';
+                    }
+                })
+            }
+
+            function carrierInfo() {
+                $.ajax({
+                    type: "GET",
+                    url: "/state",
+                    data: {},
+                    success: function (response) {
+                        let carriers = response['all_carriers'];
+                        for (let i = 0; i < carriers.length; i++) {
+                            let carrier = carriers[i]['carrier'];
+                            let number = carriers[i]['number'];
+                            let status = carriers[i]['status'];
+                            let desc = carriers[i]['desc'];
+                            let loca = carriers[i]['loca'];
+
+                            let temp_html = `<tr>
+                                                <th scope="row">${carrier}</th>
+                                                <td>${number}</td>
+                                                <td>${status}</td>
+                                                <td>${desc}</td>
+                                                <td>${loca}</td>
+                                            </tr>`
+                            $('#registration-box').append(temp_html);
+                        }
+
+                    }
+                })
+            }
+        </script>
+
+    </head>
+
+    <body>
+        <div class="wrap">
+            <div class="jumbotron">
+                <h1 class="display-4">나홀로 링크 메모장!</h1>
+                <p class="lead">중요한 링크를 저장해두고, 나중에 볼 수 있는 공간입니다</p>
+                <hr class="my-4">
+                <p class="lead">
+                    <button onclick="openClose()" id="btn-post-box" type="button" class="btn btn-primary">포스팅 박스 열기
+                    </button>
+                </p>
+            </div>
+            <div id="post-box" class="form-post" style="">
+                <div>
+                    <div class="form-group">
+                        <label for="carrier-txt">택배사</label>
+                        <input id="carrier-txt" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="carrier-number">송장번호</label>
+                        <input id="carrier-number" class="form-control" rows="2"></input>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="registration()">등록</button>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">택배사</th>
+                    <th scope="col">송장번호</th>
+                    <th scope="col">현황</th>
+                    <th scope="col">상세정보</th>
+                    <th scope="col">위치</th>
+                </tr>
+                </thead>
+                <tbody id="registration-box">
+                </tbody>
+            </table>
+        </div>
+    </body>
+
+</html>
