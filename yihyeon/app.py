@@ -40,6 +40,14 @@ def register():
     return jsonify({'result': 'success'})
 
 
+#중복확인
+@app.route('/sign_up/check_dup', methods=['POST'])
+def check_dup():
+    username_receive = request.form['username_give']
+    exists = bool(db.users.find_one({"username": username_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
+
 # 로그인
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
@@ -61,9 +69,9 @@ def sign_in():
             'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
         }
         # payload를 시크릿키로 감싸서 암호화 한 다음에 token 발행.
+        # id, 유효기간, 시크릿 키를 ???
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        # 결과적으로 회원에게 강력히 암호화된 토큰을 만들어 줌.
         return jsonify({'result': 'success', 'token': token, 'msg': '로그인 성공!'})
 
     # 회원이 아닌 경우(아이디나 비밀번호를 잘못 입력 했을 때)
@@ -71,10 +79,6 @@ def sign_in():
         return jsonify({'result': 'fail', 'msg': '아이디나 비밀번호가 맞지 않습니다. 다시 확인해주세요.'})
 
 
-# 회원가입
-# @app.route('/sign_up', methods=['POST'])
-# def sign_up():
-#     return jsonify({'result': 'success', 'msg': '회원가입 접속 성공!'})
 
 
 if __name__ == '__main__':

@@ -26,9 +26,28 @@
                 background-color: white;
             }
 
+            .btns {
+                text-align: center;
+            }
             .control {
                 width: 500px;
                 margin: 10px auto;
+            }
+
+            #input-username {
+                display: inline-block;
+                width: 413px;
+                border-radius: 4px 0 0 4px;
+            }
+
+            .check-username {
+                width: 80px;
+                height: 39px;
+                border: none;
+                color: white;
+                background-color: #476ad5;
+                border-radius: 0 4px 4px 0;
+                cursor: pointer;
             }
 
             .register-button, .cancel-button {
@@ -47,15 +66,17 @@
                 background-color: white;
                 color: #476ad5;
                 border: 1px solid #476ad5;
-                text-align: center;
-                font-size: 15px;
-                padding: 7px;
             }
 
             .requirement {
                 font-size: 11px;
                 margin: 0 20px;
                 color: #9a9a9a;
+            }
+
+            .match {
+                font-size: 11px;
+                margin: 10px 0;
             }
         </style>
 
@@ -75,16 +96,64 @@
                 return regExp.test(asValue);
             }
 
+            //아이디 중복확인
+            function check_dup() {
+                let username = $("#input-username").val()
 
+                if (username == "") {
+                    $('#username-requirement').text("아이디를 입력해주세요.").css({color: "red"});
+                    $('#input-username').focus();
+                    return;
+                }
+
+                // 아이디 형식 체크(오류)
+                if (!is_nickname(username)) {
+                    $('#username-requirement').text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").css({color: "red"});
+                    $('#input-username').focus();
+                    return;
+                }
+
+                // 중복확인 여부 확인하는 코드(클래스 추가)
+                {#$("#username-requirement").addClass("is-checking")#}
+
+                $.ajax({
+                    type: "POST",
+                    url: "/sign_up/check_dup",
+                    data: {
+                        username_give: username
+                    },
+                    success: function (response) {
+                        if (response["exists"]) {   //있으면 true
+                            $('#username-requirement').text("이미 존재하는 id 입니다.").css({color: "red"});
+                            $('#input-username').focus();
+                        } else { //없는 경우(쓸 수 있는 아이디)
+                            $('#username-requirement').text("사용 가능한 id 입니다.").css({color: "skyblue"});
+                        }
+
+                        // 중복확인 여부 확인하는 코드(클래스 제거)
+                        {#$("#username-requirement").removeClass("is-checking")#}
+
+                        // 중복확인을 마치고 나면 is-checking 클래스를 제거해서, requirement 클래스만 남은 상태.
+                    }
+                });
+
+            }
+
+            // 회원가입
             function register() {
                 let username = $("#input-username").val()
                 let password = $("#input-password").val()
                 let password2 = $("#input-password2").val()
-                console.log(username, password, password2)
 
                 // 아이디 중복확인 하...
+                if (username == "") {
+                    $('#username-requirement').text("아이디를 입력해주세요.").css({color: "red"});
+                    $('#input-username').focus();
+                }
+                // else if문 (중복확인 안하고 회원가입 눌렀을 때)
 
-                // 비밀번호
+
+                // 비밀번호 형식 확인
                 if (password == "") {
                     $('#password-requirement').text("비밀번호를 입력해주세요.").css({color: "red"});
                     $("#input-password").focus();
@@ -94,9 +163,21 @@
                         .css({color: "red"});
                     $("#input-password").focus();
                 } else {
-                    $('#password-requirement').text("적합한 비밀번호 입니다.");
+                    $('#password-requirement').text("적합한 비밀번호 입니다.").css({color: "skyblue"});
                 }
 
+                // 비밀번호 일치 확인
+                if (password2 == "") {
+                    $('#password-requirement2').text("비밀번호를 입력해주세요.").css({color: "red"});
+                    $("#input-password2").focus();
+                    return;
+                } else if (password2 != password) {
+                    $('#password-requirement2').text("비밀번호가 일치하지 않습니다.").css({color: "red"});
+                    $("#input-password2").focus();
+                    return;
+                } else {
+                    $('#password-requirement2').text("비밀번호가 일치합니다.").css({color: "skyblue"});
+                }
 
                 $.ajax({
                     type: "POST",
@@ -110,6 +191,10 @@
                         window.location.replace("/")
                     }
                 });
+            }
+
+            function cancel(){
+                window.location.replace("/")
             }
 
         </script>
@@ -130,8 +215,9 @@
         <div class="wrap-form">
             <div class="control">
               <input id="input-username" class="input" type="text" placeholder="id">
+              <button class="check-username" onclick="check_dup()">중복확인</button>
             </div>
-            <p class="requirement">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
+            <p id="username-requirement" class="requirement">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
 
 
             <div class="control">
@@ -141,11 +227,13 @@
 
             <div class="control">
               <input id="input-password2" class="input" type="password" placeholder="Password 재입력" required>
-                <p></p>
+                <p id="password-requirement2" class="match"></p>
             </div>
 
-            <button class="register-button" onclick="register()">회원가입</button>
-            <button class="cancel-button">취소</button>
+            <div class="btns">
+                <button class="register-button" onclick="register()">회원가입</button>
+                <button class="cancel-button" onclick="cancel()">취소</button>
+            </div>
 
         </div>
     </body>
