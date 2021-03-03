@@ -117,6 +117,31 @@
                     "side"
                     "main";
             }
+            .side {
+                grid-area: side;
+                /* border: solid 1px rgba(0,0,0,0.25); */
+                background-color: white;
+                color: rgba(0,0,0,0.7);
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
+                /* grid-gap: 20px;
+                padding: 22px; */
+            }
+            .side .btn-info {
+                display: inline-block;
+                margin-right: 0;
+                width: 150px;
+                height: 35px;
+                border: none;
+                border-radius: 4px;
+                color: white;
+                font-size: 14.5px;
+                /* background: linear-gradient(to bottom right, rgb(64, 213, 250), rgb(78, 197, 212)); */
+                background: linear-gradient(to bottom right, rgb(114, 185, 255), rgb(122, 165, 245));
+            }
             .main {
                 grid-area: main;
                 /* border: solid 1px rgba(0,0,0,0.25); */
@@ -186,7 +211,7 @@
             background-position: center;
             width: 180px;
             height: 180px;
-            border-radius: 100px;
+            border-radius: 12px;
             border: solid 1px rgba(0,0,0,0.2);
             background-color: whitesmoke;
             box-shadow: 0 2px 10px 0 rgba(0,0,0,0.15);
@@ -196,10 +221,12 @@
         .side .user-info .user-name {
             text-align: center;
             font-size: larger;
+            font-weight: 500;
         }
         .side .btn-info {
+
             display: block;
-            width: 120px;
+            width: 150px;
             height: 35px;
             border: none;
             border-radius: 4px;
@@ -239,20 +266,28 @@
             font-size: 13px;
         }
         .thead-dark {
-            background-color: rgb(52,51,51);
+
             color: white;
         }
         .form-group {
             margin: 20px 0;
-            font-size: 1rem;
+
         }
         .form-control {
             width: 150px;
         }
         .form-group-txt {
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-weight: 400;
+            font-size: 0.92rem;
         }
+        .table-order, .table-carrier, .table-time, .table-location, .table-status {
+            font-weight: 400;
+            color: black;
+        }
+
+
 
     </style>
     <script>
@@ -283,20 +318,20 @@
                     url: "/state",
                     data: {},
                     success: function (response) {
-                        let articles = response['all_articles'];
-                        for (let i = 0; i < articles.length; i++) {
-                            let title = articles[i]['title'];
-                            let image = articles[i]['image'];
-                            let desc = articles[i]['desc'];
-                            let url = articles[i]['url'];
-                            let comment = articles[i]['comment'];
+                        let carriers = response['all_carriers'];
+                        for (let i = 0; i < carriers.length; i++) {
+                            let carrier = carriers[i]['carrier'];
+                            let number = carriers[i]['number'];
+                            let status = carriers[i]['status'];
+                            let desc = carriers[i]['desc'];
+                            let loca = carriers[i]['loca'];
 
                             let temp_html = `<tr>
-                                                <th scope="row">1</th>
-                                                <td>CJ대한통운<br><p class="number">359920496655</p></td>
-                                                <td>2021-03-01<br>11:47</td>
-                                                <td>예스24_A센터</td>
-                                                <td>상품인수<br><p class="desc">보내시는 고객님으로부터 상품을 인수받았습니다</p></td>
+                                                <th scope="row">${carrier}</th>
+                                                <td>${number}</td>
+                                                <td>${status}</td>
+                                                <td>${desc}</td>
+                                                <td>${loca}</td>
                                             </tr>`
                             $('#regis-list').append(temp_html);
                         }
@@ -311,64 +346,71 @@
             <div class="side">
                 <div class="user-info">
                     <img>
-                    <div class="user-name"><p>이름이</p></div>
-                </div>
-
-                <div id="post-box" class="form-post" style="">
-                    <div>
-                        <div class="form-group">
-                            <label class="form-group-txt" for="carrier-txt">택배사</label><br>
-                            <select class="form-control" id="carrier-txt">
-                                <option> ----- 택배사 선택 -----</option>
-                                <option>DHL</option>
-                                <option>Sagawa</option>
-                                <option>Kuroneko Yamato</option>
-                                <option>Japan Post</option>
-                                <option>천일택배</option>
-                                <option>CJ대한통운</option>
-                                <option>CU 편의점택배</option>
-                                <option>GS Postbox 택배</option>
-                                <option>CWAY (Woori Express)</option>
-                                <option>대신택배</option>
-                                <option>우체국 택배</option>
-                                <option>한의사랑택배</option>
-                                <option>한진택배</option>
-                                <option>합동택배</option>
-                                <option>홈픽</option>
-                                <option>한서호남택배</option>
-                                <option>일양로지스</option>
-                                <option>경동택배</option>
-                                <option>건영택배</option>
-                                <option>로젠택배</option>
-                                <option>롯데택배</option>
-                                <option>SLX</option>
-                                <option>성원글로벌카고</option>
-                                <option>TNT</option>
-                                <option>EMS</option>
-                                <option>Fedex</option>
-                                <option>UPS</option>
-                                <option>USPS</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-group-txt" for="carrier-number">송장번호</label><br>
-                            <input id="carrier-number" class="form-control">
-                        </div>
+{#                    <div class="user-name"><p>이름이</p></div>#}
+                    <div class="user-name">
+                        {% if user_info %}
+                        <p>{{ user_info }}</p>
+                        {% endif %}
                     </div>
                 </div>
-                <button onclick="regis()" type="button" class="btn btn-info">상품 등록</button>
+                <div class="registration">
+                    <div id="post-box" class="form-post" style="">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-group-txt" for="carrier-txt">택배사</label><br>
+                                <select class="form-control" id="carrier-txt">
+                                    <option> ----- 택배사 선택 -----</option>
+                                    <option>DHL</option>
+                                    <option>Sagawa</option>
+                                    <option>Kuroneko Yamato</option>
+                                    <option>Japan Post</option>
+                                    <option>천일택배</option>
+                                    <option>CJ대한통운</option>
+                                    <option>CU 편의점택배</option>
+                                    <option>GS Postbox 택배</option>
+                                    <option>CWAY (Woori Express)</option>
+                                    <option>대신택배</option>
+                                    <option>우체국 택배</option>
+                                    <option>한의사랑택배</option>
+                                    <option>한진택배</option>
+                                    <option>합동택배</option>
+                                    <option>홈픽</option>
+                                    <option>한서호남택배</option>
+                                    <option>일양로지스</option>
+                                    <option>경동택배</option>
+                                    <option>건영택배</option>
+                                    <option>로젠택배</option>
+                                    <option>롯데택배</option>
+                                    <option>SLX</option>
+                                    <option>성원글로벌카고</option>
+                                    <option>TNT</option>
+                                    <option>EMS</option>
+                                    <option>Fedex</option>
+                                    <option>UPS</option>
+                                    <option>USPS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-txt" for="carrier-number">송장번호</label><br>
+                                <input id="carrier-number" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="regis()" type="button" class="btn btn-info">배송 상품 등록</button>
+                </div>
             </div>
+
             <div class="main">
                 <div class="carrier-title">
                     <h2 class="carrier-title-txt">보자보자 운송장 서비스!</h2>
                 </div>
                 <div class="carrier-total-amount">
-                    <h2>배송중인 택배 : 2</h2>
+                    <h2>배송중인 택배 : 2 건</h2>
                 </div>
                 <div class="carrier-state">
                     <table class="table">
                         <thead class="thead-dark">
-                            <tr>
+                            <tr class="th-font">
                                 <th scope="col" class="table-order">#</th>
                                 <th scope="col" class="table-carrier">택배사<br>/송장번호</th>
                                 <th scope="col" class="table-time">배송시간</th>
