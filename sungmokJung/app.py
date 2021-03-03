@@ -1,42 +1,36 @@
+from pymongo import MongoClient
+from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify
 import requests
 
 app = Flask(__name__)
 
-import requests
-from bs4 import BeautifulSoup
 
-from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.dbsparta
 
 
-# HTML을 주는 부분
-
-
 @app.route('/')
-def main():
-    return render_template("index.html")
-
-@app.route('/state', methods=['GET'])
-def listing():
-    carriers = list(db.carriers.find({}, {'_id': False}))
-
-    return jsonify({'all_carriers': carriers})
+def home():
+    return render_template('index.html')
 
 
-# API 역할을 하는 부분
+@app.route('/regis')
+def regis():
+    return render_template('regis.html')
 
 
-@app.route('/registration', methods=['POST'])
+@app.route('/regis', methods=['POST'])
 def saving():
     carrier_receive = request.form['carrier_give']
     number_receive = request.form['number_give']
 
-    carrierCode = db.carriersCode.find_one({'name': carrier_receive}, {'_id': False})
+    carrierCode = db.carriersCode.find_one(
+        {'name': carrier_receive}, {'_id': False})
     ca = carrierCode['nameCode']
 
-    r = requests.get('https://apis.tracker.delivery/carriers/'+ca+'/tracks/'+number_receive)
+    r = requests.get('https://apis.tracker.delivery/carriers/' +
+                     ca+'/tracks/'+number_receive)
     result = r.json()
     print(result)
 
@@ -57,7 +51,8 @@ def saving():
     }
     db.carrierState.insert_one(doc)
 
-    return jsonify({'msg':'등록 완료!'})
+    return jsonify({'msg': '등록 완료!'})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
