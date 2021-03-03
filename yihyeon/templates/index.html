@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>보자보자 운송장 서비스</title>
+        {% if title %}
+        <title>{{title}}</title>
+        {% endif %}
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -111,9 +113,6 @@
                 window.location.href="/sign_up"
             }
 
-            {#$(document).ready(function (){#}
-            {#    $('#second-form').hide();#}
-
         </script>
 
     </head>
@@ -121,12 +120,13 @@
 
         <section class="hero is-info">
           <div class="hero-body">
-            <p class="title">
-              보자보자 운송장 서비스
-            </p>
-            <p class="subtitle is-sub">
-              내 운송장을 한꺼번에 모아 보세요.
-            </p>
+            {% if title %}
+            <p class="title">{{ title }}</p>
+            {% endif %}
+
+            {% if subtitle %}
+            <p class="subtitle is-sub">{{ subtitle }}</p>
+            {% endif %}
           </div>
         </section>
 

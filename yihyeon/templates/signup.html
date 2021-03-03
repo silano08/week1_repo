@@ -1,240 +1,242 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <title>보자보자 운송장 서비스</title>
+<head>
+    <title>보자보자 운송장 서비스</title>
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-        <style>
-            .is-sub {
-                margin-top: 20px !important;
-                font-size: 18px;
+    <style>
+        .is-sub {
+            margin-top: 20px !important;
+            font-size: 18px;
+        }
+
+        .wrap-form {
+            width: 600px;
+            height: 350px;
+            margin: 100px auto;
+            border: 1px solid #8598cd;
+            padding: 30px;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .btns {
+            text-align: center;
+        }
+
+        .control {
+            width: 500px;
+            margin: 10px auto;
+        }
+
+        #input-username {
+            display: inline-block;
+            width: 413px;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .check-username {
+            width: 80px;
+            height: 39px;
+            border: none;
+            color: white;
+            background-color: #476ad5;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .register-button, .cancel-button {
+            width: 250px;
+            height: 35px;
+            margin: 30px auto;
+            color: white;
+            background-color: #476ad5;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            background-color: white;
+            color: #476ad5;
+            border: 1px solid #476ad5;
+        }
+
+        .requirement {
+            font-size: 11px;
+            margin: 0 20px;
+            color: #9a9a9a;
+        }
+
+        .match {
+            font-size: 11px;
+            margin: 10px 0;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script>
+        // 아이디 정규표현식 함수
+        function is_nickname(asValue) {
+            var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{6,12}$/;
+            return regExp.test(asValue);
+        }
+
+        // 비밀번호 정규표현식 함수
+        function is_password(asValue) {
+            var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+            return regExp.test(asValue);
+        }
+
+        //아이디 중복확인
+        function check_dup() {
+            let username = $("#input-username").val()
+
+            if (username == "") {
+                $("#username-requirement").text("아이디를 입력해주세요.").css({color: "red"}).addClass("is-danger")
+                $("#input-username").focus()
+                return;
+            }else if (!is_nickname(username)) { //형식 체크
+                $('#username-requirement').text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 6-12자 길이").css({color: "red"})
+                $('#input-username').focus()
+                return;
             }
 
-            .wrap-form {
-                width: 600px;
-                height: 350px;
-                margin: 100px auto;
-                border: 1px solid #8598cd;
-                padding: 30px;
-                border-radius: 5px;
-                background-color: white;
-            }
 
-            .btns {
-                text-align: center;
-            }
-            .control {
-                width: 500px;
-                margin: 10px auto;
-            }
-
-            #input-username {
-                display: inline-block;
-                width: 413px;
-                border-radius: 4px 0 0 4px;
-            }
-
-            .check-username {
-                width: 80px;
-                height: 39px;
-                border: none;
-                color: white;
-                background-color: #476ad5;
-                border-radius: 0 4px 4px 0;
-                cursor: pointer;
-            }
-
-            .register-button, .cancel-button {
-                width: 250px;
-                height: 35px;
-                margin: 30px auto;
-                color: white;
-                background-color: #476ad5;
-                font-weight: bold;
-                border-radius: 5px;
-                border: none;
-                cursor: pointer;
-            }
-
-            .cancel-button {
-                background-color: white;
-                color: #476ad5;
-                border: 1px solid #476ad5;
-            }
-
-            .requirement {
-                font-size: 11px;
-                margin: 0 20px;
-                color: #9a9a9a;
-            }
-
-            .match {
-                font-size: 11px;
-                margin: 10px 0;
-            }
-        </style>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
-        <script>
-            // 아이디 정규표현식 함수
-            function is_nickname(asValue) {
-                var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
-                return regExp.test(asValue);
-            }
-
-            // 비밀번호 정규표현식 함수
-            function is_password(asValue) {
-                var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
-                return regExp.test(asValue);
-            }
-
-            //아이디 중복확인
-            function check_dup() {
-                let username = $("#input-username").val()
-
-                if (username == "") {
-                    $('#username-requirement').text("아이디를 입력해주세요.").css({color: "red"});
-                    $('#input-username').focus();
-                    return;
-                }
-
-                // 아이디 형식 체크(오류)
-                if (!is_nickname(username)) {
-                    $('#username-requirement').text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").css({color: "red"});
-                    $('#input-username').focus();
-                    return;
-                }
-
-                // 중복확인 여부 확인하는 코드(클래스 추가)
-                {#$("#username-requirement").addClass("is-checking")#}
-
-                $.ajax({
-                    type: "POST",
-                    url: "/sign_up/check_dup",
-                    data: {
-                        username_give: username
-                    },
-                    success: function (response) {
-                        if (response["exists"]) {   //있으면 true
-                            $('#username-requirement').text("이미 존재하는 id 입니다.").css({color: "red"});
-                            $('#input-username').focus();
-                        } else { //없는 경우(쓸 수 있는 아이디)
-                            $('#username-requirement').text("사용 가능한 id 입니다.").css({color: "skyblue"});
-                        }
-
-                        // 중복확인 여부 확인하는 코드(클래스 제거)
-                        {#$("#username-requirement").removeClass("is-checking")#}
-
-                        // 중복확인을 마치고 나면 is-checking 클래스를 제거해서, requirement 클래스만 남은 상태.
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/check_dup",
+                data: {
+                    username_give: username
+                },
+                success: function (response) {
+                    if (response["exists"]) {   //있으면 true
+                        $('#username-requirement').text("이미 존재하는 id 입니다.").css({color: "red"}).addClass("is-danger")
+                        $('#input-username').focus()
+                    } else { //없는 경우(쓸 수 있는 아이디)
+                        // 사용 가능한 id라는 것을 확인 받은 경우에만 가입 가능하게 설정.
+                        $('#username-requirement').text("사용 가능한 id 입니다.").css({color: "skyblue"})
+                            .removeClass("is-danger").addClass("is-success")
                     }
-                });
 
+                }
+            });
+
+        }
+
+        // 회원가입
+        function register() {
+            let username = $("#input-username").val()
+            let password = $("#input-password").val()
+            let password2 = $("#input-password2").val()
+
+
+            // 중복된 아이디인데 회원가입이 돼버림 <- 막는 코드
+            if ($('#username-requirement').hasClass("is-danger")) {
+                alert("id를 다시 확인해주세요.")
+                $('#username-requirement').text("")
+                return;
+                {#return window.location.reload();#}
+
+            } else if (!$('#username-requirement').hasClass("is-success")) {    // 사용가능한 id일 경우에만 가입 가능.
+                alert("아이디 중복확인을 해주세요.");
+                return;
             }
 
-            // 회원가입
-            function register() {
-                let username = $("#input-username").val()
-                let password = $("#input-password").val()
-                let password2 = $("#input-password2").val()
 
-                // 아이디 중복확인 하...
-                if (username == "") {
-                    $('#username-requirement').text("아이디를 입력해주세요.").css({color: "red"});
-                    $('#input-username').focus();
-                }
-                // else if문 (중복확인 안하고 회원가입 눌렀을 때)
-
-
-                // 비밀번호 형식 확인
-                if (password == "") {
-                    $('#password-requirement').text("비밀번호를 입력해주세요.").css({color: "red"});
-                    $("#input-password").focus();
-                    return;
-                } else if (!is_password(password)) {
-                    $('#password-requirement').text("비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자")
-                        .css({color: "red"});
-                    $("#input-password").focus();
-                } else {
-                    $('#password-requirement').text("적합한 비밀번호 입니다.").css({color: "skyblue"});
-                }
-
-                // 비밀번호 일치 확인
-                if (password2 == "") {
-                    $('#password-requirement2').text("비밀번호를 입력해주세요.").css({color: "red"});
-                    $("#input-password2").focus();
-                    return;
-                } else if (password2 != password) {
-                    $('#password-requirement2').text("비밀번호가 일치하지 않습니다.").css({color: "red"});
-                    $("#input-password2").focus();
-                    return;
-                } else {
-                    $('#password-requirement2').text("비밀번호가 일치합니다.").css({color: "skyblue"});
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "/sign_up/register",
-                    data: {
-                        username_give: username,
-                        password_give: password
-                    },
-                    success: function (response) {
-                        alert("회원가입을 축하드립니다!")
-                        window.location.replace("/")
-                    }
-                });
+            // 비밀번호 형식 확인
+            if (password == "") {
+                $('#password-requirement').text("비밀번호를 입력해주세요.").css({color: "red"});
+                $("#input-password").focus();
+                return;
+            } else if (!is_password(password)) {
+                $('#password-requirement').text("비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자")
+                    .css({color: "red"});
+                $("#input-password").focus();
+                return;
+            } else {
+                $('#password-requirement').text("적합한 비밀번호 입니다.").css({color: "skyblue"});
             }
 
-            function cancel(){
-                window.location.replace("/")
+            // 비밀번호 일치 확인
+            if (password2 == "") {
+                $('#password-requirement2').text("비밀번호를 입력해주세요.").css({color: "red"});
+                $("#input-password2").focus();
+                return;
+            } else if (password2 != password) {
+                $('#password-requirement2').text("비밀번호가 일치하지 않습니다.").css({color: "red"});
+                $("#input-password2").focus();
+                return;
+            } else {
+                $('#password-requirement2').text("비밀번호가 일치합니다.").css({color: "skyblue"});
             }
 
-        </script>
 
-    </head>
-    <body>
-        <section class="hero is-info">
-          <div class="hero-body">
-            <p class="title">
-              보자보자 운송장 서비스
-            </p>
-            <p class="subtitle is-sub">
-              내 운송장을 한꺼번에 모아 보세요.
-            </p>
-          </div>
-        </section>
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/register",
+                data: {
+                    username_give: username,
+                    password_give: password
+                },
+                success: function (response) {
+                    alert("회원가입이 완료되었습니다!")
+                    window.location.replace("/")
+                }
+            });
+        }
 
-        <div class="wrap-form">
-            <div class="control">
-              <input id="input-username" class="input" type="text" placeholder="id">
-              <button class="check-username" onclick="check_dup()">중복확인</button>
-            </div>
-            <p id="username-requirement" class="requirement">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
+        function cancel() {
+            window.location.replace("/")
+        }
+
+    </script>
+
+</head>
+<body>
+<section class="hero is-info">
+    <div class="hero-body">
+        <p class="title">
+            보자보자 운송장 서비스
+        </p>
+        <p class="subtitle is-sub">
+            내 운송장을 한꺼번에 모아 보세요.
+        </p>
+    </div>
+</section>
+
+<div class="wrap-form">
+    <div class="control">
+        <input id="input-username" class="input" type="text" placeholder="id">
+        <button class="check-username" onclick="check_dup()">중복확인</button>
+    </div>
+    <p id="username-requirement" class="requirement">아이디는 6-12자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
 
 
-            <div class="control">
-              <input id="input-password" class="input" type="password" placeholder="Password" required>
-            </div>
-            <p id="password-requirement" class="requirement">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용가능합니다.</p>
+    <div class="control">
+        <input id="input-password" class="input" type="password" placeholder="Password" required>
+    </div>
+    <p id="password-requirement" class="requirement">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용가능합니다.</p>
 
-            <div class="control">
-              <input id="input-password2" class="input" type="password" placeholder="Password 재입력" required>
-                <p id="password-requirement2" class="match"></p>
-            </div>
+    <div class="control">
+        <input id="input-password2" class="input" type="password" placeholder="Password 재입력" required>
+        <p id="password-requirement2" class="match"></p>
+    </div>
 
-            <div class="btns">
-                <button class="register-button" onclick="register()">회원가입</button>
-                <button class="cancel-button" onclick="cancel()">취소</button>
-            </div>
+    <div class="btns">
+        <button class="register-button" onclick="register()">회원가입</button>
+        <button class="cancel-button" onclick="cancel()">취소</button>
+    </div>
 
-        </div>
-    </body>
+</div>
+</body>
 </html>
