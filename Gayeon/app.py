@@ -8,25 +8,23 @@ app.secret_key = "geung_geung"
 client = MongoClient('localhost', 27017)
 db = client.bojaboja_service
 
-# class User():
-ID="aaa"
-PW="aaa"
 
 @app.route('/')
 def login():
     if "userID" in session:
         return render_template("login.html", username=session.get("userID"),login=True)
     else:
-        return render_template("login.html",login=False)
+        return render_template("login.html", login=False)
 
 @app.route('/home', methods=["GET"])
 def home():
-    global ID,PW
     _id_ = request.args.get("loginId")
     _password_ = request.args.get("loginPw")
 
+    result = db.users.bojaboja_service.find_one({'userid': _id_, 'userpwd': _password_})
     # 밑의 조건문을 통해 login으로 돌아가는데 세션아이디가 있고없고의차이
-    if ID == _id_ and _password_ ==PW:
+    # if ID == _id_ and _password_ ==PW:
+    if result is not None:
         session["userID"] = _id_
         return redirect(url_for("login"))
     else:
@@ -42,20 +40,26 @@ def signin_done():
     username = request.args.get("name")
     userid = request.args.get("id")
     userpwd = request.args.get("Pw")
-    print(username,userid,userpwd)
+
     doc = {
         # 이후 다른 post 정보도 삽입가능, 그런데 그건 다른함수에 넣을예정
         'username':username,
         'userid': userid,
         'userpwd': userpwd
     }
-    db.users.bojaboja_service.insert_one(doc)
-    return redirect(url_for("signin"))
-    # if db.bojaboja_service.find_one({'username':doc['username']}) == doc:
-    #     return redirect(url_for("signin"))
-    # else:
-    #     db.bojaboja_service.insert_once(doc)
-    #     return redirect(url_for("login"))
+
+    # db.users.bojaboja_service.insert_one(doc)
+    # return redirect(url_for("signin"))
+
+    result = db.users.bojaboja_service.find_one({'userid': userid, 'userpwd': userpwd})
+
+    # 밑의 조건문을 통해 login으로 돌아가는데 세션아이디가 있고없고의차이
+    # if ID == _id_ and _password_ ==PW:
+    if result is not None:
+        return redirect(url_for("signin"))
+    else:
+        db.users.bojaboja_service.insert_one(doc)
+        return redirect(url_for("login"))
 
 @app.route("/login_done")
 def login_done():
