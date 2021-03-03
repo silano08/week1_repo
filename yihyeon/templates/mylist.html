@@ -199,14 +199,14 @@
         }
         .side .btn-info {
             display: block;
-            width: 140px;
+            width: 120px;
             height: 35px;
             border: none;
             border-radius: 4px;
             color: white;
             font-size: 14.5px;
             /* background: linear-gradient(to bottom right, rgb(64, 213, 250), rgb(78, 197, 212)); */
-            background: linear-gradient(to bottom right, rgb(114, 215, 255), rgb(122, 200, 245));
+            background: linear-gradient(to bottom right, rgb(114, 185, 255), rgb(122, 165, 245));
         }
 
         .table {
@@ -242,13 +242,39 @@
             background-color: rgb(52,51,51);
             color: white;
         }
-
+        .form-group {
+            margin: 20px 0;
+            font-size: 1rem;
+        }
+        .form-control {
+            width: 150px;
+        }
+        .form-group-txt {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
 
     </style>
     <script>
         $(document).ready(function () {
             // showList();
         });
+
+        function regis() {
+                let carrier = $('#carrier-txt').val();
+                let number = $('#carrier-number').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/regis",
+                    data: {carrier_give: carrier, number_give: number},
+                    success: function (response) { // 성공하면
+                        alert(response["msg"]);
+                        window.location.href="/";
+                    }
+                })
+            }
+
 
         function showList() {
                 $('#regis-list').empty();
@@ -277,23 +303,6 @@
                     }
                 })
             }
-
-        function post() {
-            let comment = $("#textarea-post").val()
-            let today = new Date().toISOString()
-            $.ajax({
-                type: "POST",
-                url: "/posting",
-                data: {
-                    comment_give: comment,
-                    date_give: today
-                },
-                success: function (response) {
-                    $("#modal-post").removeClass("is-active")
-                                window.location.reload()
-                }
-            })
-        }
     </script>
 </head>
 <body>
@@ -304,7 +313,50 @@
                     <img>
                     <div class="user-name"><p>이름이</p></div>
                 </div>
-                <button onclick="window.location.href='/'" type="button" class="btn btn-info">Registration</button>
+
+                <div id="post-box" class="form-post" style="">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-group-txt" for="carrier-txt">택배사</label><br>
+                            <select class="form-control" id="carrier-txt">
+                                <option> ----- 택배사 선택 -----</option>
+                                <option>DHL</option>
+                                <option>Sagawa</option>
+                                <option>Kuroneko Yamato</option>
+                                <option>Japan Post</option>
+                                <option>천일택배</option>
+                                <option>CJ대한통운</option>
+                                <option>CU 편의점택배</option>
+                                <option>GS Postbox 택배</option>
+                                <option>CWAY (Woori Express)</option>
+                                <option>대신택배</option>
+                                <option>우체국 택배</option>
+                                <option>한의사랑택배</option>
+                                <option>한진택배</option>
+                                <option>합동택배</option>
+                                <option>홈픽</option>
+                                <option>한서호남택배</option>
+                                <option>일양로지스</option>
+                                <option>경동택배</option>
+                                <option>건영택배</option>
+                                <option>로젠택배</option>
+                                <option>롯데택배</option>
+                                <option>SLX</option>
+                                <option>성원글로벌카고</option>
+                                <option>TNT</option>
+                                <option>EMS</option>
+                                <option>Fedex</option>
+                                <option>UPS</option>
+                                <option>USPS</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-group-txt" for="carrier-number">송장번호</label><br>
+                            <input id="carrier-number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <button onclick="regis()" type="button" class="btn btn-info">상품 등록</button>
             </div>
             <div class="main">
                 <div class="carrier-title">
