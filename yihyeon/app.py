@@ -17,7 +17,11 @@ db = client.dbsparta_team_project01
 # html파일 불러오기
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template(
+        'index.html',
+        title = '보자보자 운송장 서비스',
+        subtitle = '내 운송장을 한꺼번에 모아 보세요.'
+    )
 
 # 회원가입 페이지 불러오기
 @app.route('/sign_up')
@@ -77,8 +81,6 @@ def sign_in():
     # 회원이 아닌 경우(아이디나 비밀번호를 잘못 입력 했을 때)
     else:
         return jsonify({'result': 'fail', 'msg': '아이디나 비밀번호가 맞지 않습니다. 다시 확인해주세요.'})
-
-
 
 
 if __name__ == '__main__':
