@@ -1,330 +1,173 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!Doctype html>
+<html lang="ko">
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    
-    <link rel="preconnect" href="https://fonts.gstatic.com"> 
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <title>Title</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-        
-        .wrap {
-            height: 100vh;
-            width: 100%;
-        }
-        .container {
-            margin-left: 0;
-            margin-right: 0;
-            margin-bottom: 100px;
-            padding: 0;
-            background-color: whitesmoke;
-            /* border: solid 1px rgba(0,0,0,0.25); */
-            border-radius: 8px;
-            display: grid;
-            grid-template-columns: 20% 1fr;
-            grid-template-rows: 150px 1fr;
-            min-height: 100vh;
-            
-            grid-template-areas:
-                "side main"
-                "side main"
-                "side main";
-        }
-        
-        .side {
-            grid-area: side;
-            /* border: solid 1px rgba(0,0,0,0.25); */
-            background-color: white;
-            color: rgba(0,0,0,0.7);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
-            /* grid-gap: 20px;
-            padding: 22px; */
-        }
-        .main {
-            grid-area: main;
-            /* border: solid 1px rgba(0,0,0,0.25); */
-            color: rgba(0,0,0,0.7);
-            display: grid;
-            grid-template-rows: 150px 100px 1fr;
-            grid-gap: 20px;
-            padding: 80px;
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            grid-template-areas: 
-            "up"
-            "middle"
-            "down";
-        }
-        .carrier-title {
-            grid-area: up;
-            background-color: white;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
-            margin-bottom: 50px;
-        }
-        .carrier-title, .carrier-title-txt {
-            margin: 0;
-            font-size: 50px;
-        }
-        .carrier-total-amount {
-            grid-area: middle;
-            background-color: white;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
-            {#margin-bottom: 8px;#}
-        }
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
 
-        
-        @media screen and (max-width: 985px) {
-            body {
-                height: 100vh;
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+
+        <!-- 구글폰트 -->
+        <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+
+        <title>보자보자 운송장 서비스 | 등록 페이지</title>
+
+        <!-- style -->
+        <style type="text/css">
+            * {
+                font-family: "Stylish", sans-serif;
             }
+
             .wrap {
-                height: 100vh;
-            }
-            .container {
-                grid-template-columns: 1fr;
-                grid-template-rows: 400px 1fr;
-                grid-gap: 20px;
-                grid-template-areas:
-                    "side"
-                    "main";
-            }
-            .main {
-                grid-area: main;
-                /* border: solid 1px rgba(0,0,0,0.25); */
-                color: rgba(0,0,0,0.7);
-                display: grid;
-                grid-template-rows: 150px 100px 1fr;
-                grid-gap: 20px;
-                padding: 40px 60px;
-                height: 100%;
-
-                grid-template-areas: 
-                "up"
-                "middle"
-                "down";
-            }
-            
-            .carrier-title {
-            grid-area: up;
-            background-color: white;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-        }
-            .carrier-total-amount {
-            grid-area: middle;
-            background-color: white;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
-            margin-bottom: 8px;
+                width: 900px;
+                margin: auto;
             }
 
-            .carrier-state {
-                padding: 60px 20px;
+            #post-box {
+                width: 500px;
+                margin: 20px auto;
+                padding: 50px;
+                border: black solid;
+                border-radius: 5px;
             }
 
-            .carrier-total-amount h2 {
-            margin: 0;
+            .display-4 {
+                font-size: 68px;
+                margin-bottom: 40px;
             }
-        }
-        .carrier-state {
-            grid-area: down;
-            background-color: white;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
-        }
 
-        .side .user-info {
-            
-            border-radius: 6px;
-            width: 180px;
-            height: 270px;
+            .jumbotron {
+                text-align: center;
+            }
 
-        }
-        .side .user-info img {
-            background-image: url('https://icons-for-free.com/iconfiles/png/512/facebook+profile+user+profile+icon-1320184041317225686.png');
-            background-size: cover;
-            background-position: center;
-            width: 180px;
-            height: 180px;
-            border-radius: 100px;
-            border: solid 1px rgba(0,0,0,0.2);
-            background-color: whitesmoke;
-            box-shadow: 0 2px 10px 0 rgba(0,0,0,0.15);
+        </style>
+        <script>
+            $(document).ready(function () {
+                // carrierInfo();
+            });
 
-            margin-bottom: 15px;
-        }
-        .side .user-info .user-name {
-            text-align: center;
-            font-size: larger;
-        }
-        .side .btn-info {
-            display: block;
-            width: 140px;
-            height: 35px;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 14.5px;
-            /* background: linear-gradient(to bottom right, rgb(64, 213, 250), rgb(78, 197, 212)); */
-            background: linear-gradient(to bottom right, rgb(114, 215, 255), rgb(122, 200, 245));
-        }
+            function regis() {
+                let carrier = $('#carrier-txt').val();
+                let number = $('#carrier-number').val();
 
-        .table {
-            margin: 0 80px;
-            width: 100%;
-            height: 200px;
-            border-top: 1px solid #444444;
-            border-collapse: collapse;
+                $.ajax({
+                    type: "POST",
+                    url: "/regis",
+                    data: {carrier_give: carrier, number_give: number},
+                    success: function (response) { // 성공하면
+                        alert(response["msg"]);
+                        window.location.href="/myList.html";
+                    }
+                })
+            }
 
-            text-align: center;
-        }
-
-        th, td {
-            border-bottom: 1px solid #444444;
-            padding: 10px;
-        }
-
-        .table-order {
-            width: 50px;
-        }
-
-        .table-carrier {
-            width: 160px;
-        }
-
-        .table-time {
-            width: 140px;
-        }
-        .desc, .number {
-            font-size: 13px;
-        }
-    </style>
-    <script>
-        $(document).ready(function () {
-            showList();
-        });
-
-        function openRegistration() {
-
-        }
-
-        function showArticles() {
-                $('#regis-list').empty();
+            function carrierInfo() {
                 $.ajax({
                     type: "GET",
                     url: "/state",
                     data: {},
                     success: function (response) {
-                        let articles = response['all_articles'];
-                        for (let i = 0; i < articles.length; i++) {
-                            let title = articles[i]['title'];
-                            let image = articles[i]['image'];
-                            let desc = articles[i]['desc'];
-                            let url = articles[i]['url'];
-                            let comment = articles[i]['comment'];
+                        let carriers = response['all_carriers'];
+                        for (let i = 0; i < carriers.length; i++) {
+                            let carrier = carriers[i]['carrier'];
+                            let number = carriers[i]['number'];
+                            let status = carriers[i]['status'];
+                            let desc = carriers[i]['desc'];
+                            let loca = carriers[i]['loca'];
 
                             let temp_html = `<tr>
-                                                <th scope="row">1</th>
-                                                <td>CJ대한통운<br><p class="number">359920496655</p></td>
-                                                <td>2021-03-01<br>11:47</td>
-                                                <td>예스24_A센터</td>
-                                                <td>상품인수<br><p class="desc">보내시는 고객님으로부터 상품을 인수받았습니다</p></td>
+                                                <th scope="row">${carrier}</th>
+                                                <td>${number}</td>
+                                                <td>${status}</td>
+                                                <td>${desc}</td>
+                                                <td>${loca}</td>
                                             </tr>`
-                            $('#regis-list').append(temp_html);
+                            $('#registration-box').append(temp_html);
                         }
+
                     }
                 })
             }
-    </script>
-</head>
-<body>
-    <div class="wrap">
-        <div class="container">
-            <div class="side">
-                <div class="user-info">
-                    <img>
-                    <div class="user-name"><p>이름이</p></div>
-                </div>
-                <button type="button" class="btn btn-info">Registration</button>
+        </script>
+
+    </head>
+
+    <body>
+        <div class="wrap">
+            <div class="jumbotron" onclick="window.location.href='/myList'" style="cursor: pointer">
+                <h1 class="display-4">보자보자 운송장 서비스!</h1>
+                <p class="lead">택배사와 송장번호를 등록해 내가 주문한 택배들 위치를 한 눈에 확인해보세요.</p>
             </div>
-            <div class="main">
-                <div class="carrier-title">
-                    <h2 class="carrier-title-txt">보자보자 운송장 서비스!</h2>
-                </div>
-                <div class="carrier-total-amount">
-                    <h2>배송중인 택배 : 2</h2>
-                </div>
-                <div class="carrier-state">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="table-order">#</th>
-                                <th scope="col" class="table-carrier">택배사<br>/송장번호</th>
-                                <th scope="col" class="table-time">배송시간</th>
-                                <th scope="col" class="table-location">상품위치</th>
-                                <th scope="col" class="table-status">배송상태</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody id="regis-list">
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>CJ대한통운<br><p class="number">359920496655</p></td>
-                                <td>2021-03-01<br>11:47</td>
-                                <td>예스24_A센터</td>
-                                <td>상품인수<br><p class="desc">보내시는 고객님으로부터 상품을 인수받았습니다</p></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>Otto</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div id="post-box" class="form-post" style="">
+                <div>
+                    <div class="form-group">
+                        <label for="carrier-txt">택배사</label>
+                        <select class="form-control" id="carrier-txt">
+                            <option>- 택배사 선택 -</option>
+                            <option>DHL</option>
+                            <option>Sagawa</option>
+                            <option>Kuroneko Yamato</option>
+                            <option>Japan Post</option>
+                            <option>천일택배</option>
+                            <option>CJ대한통운</option>
+                            <option>CU 편의점택배</option>
+                            <option>GS Postbox 택배</option>
+                            <option>CWAY (Woori Express)</option>
+                            <option>대신택배</option>
+                            <option>우체국 택배</option>
+                            <option>한의사랑택배</option>
+                            <option>한진택배</option>
+                            <option>합동택배</option>
+                            <option>홈픽</option>
+                            <option>한서호남택배</option>
+                            <option>일양로지스</option>
+                            <option>경동택배</option>
+                            <option>건영택배</option>
+                            <option>로젠택배</option>
+                            <option>롯데택배</option>
+                            <option>SLX</option>
+                            <option>성원글로벌카고</option>
+                            <option>TNT</option>
+                            <option>EMS</option>
+                            <option>Fedex</option>
+                            <option>UPS</option>
+                            <option>USPS</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="carrier-number">송장번호</label>
+                        <input id="carrier-number" class="form-control">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="regis()">등록</button>
                 </div>
             </div>
+            <!--
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">택배사</th>
+                    <th scope="col">송장번호</th>
+                    <th scope="col">현황</th>
+                    <th scope="col">상세정보</th>
+                    <th scope="col">위치</th>
+                </tr>
+                </thead>
+                <tbody id="registration-box">
+                </tbody>
+            </table>
+            -->
         </div>
-    </div>
-</body>
+    </body>
+
 </html>

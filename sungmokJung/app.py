@@ -1,26 +1,29 @@
-from pymongo import MongoClient
-from bs4 import BeautifulSoup
+from flask import Flask, render_template, request, jsonify
 import requests
-from flask import Flask, render_template, jsonify, request
+
 app = Flask(__name__)
 
+import requests
+from bs4 import BeautifulSoup
 
+from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.dbsparta
+
 
 # HTML을 주는 부분
 
 
 @app.route('/')
-def home():
-    return render_template('index.html')
-
+def main():
+    return render_template("index.html")
 
 @app.route('/state', methods=['GET'])
 def listing():
     carriers = list(db.carriers.find({}, {'_id': False}))
 
     return jsonify({'all_carriers': carriers})
+
 
 # API 역할을 하는 부분
 
@@ -30,28 +33,31 @@ def saving():
     carrier_receive = request.form['carrier_give']
     number_receive = request.form['number_give']
 
-    url = 'https://apis.tracker.delivery/carriers/' + \
-        carrier_receive+'/tracks/'+number_receive
-    response = requests.get(url)
+    carrierCode = db.carriersCode.find_one({'name': carrier_receive}, {'_id': False})
+    ca = carrierCode['nameCode']
 
-    carrier = response.json()['carrier']['name']
-    number = number_receive
-    status = response.json()['progresses'][0]['status']['text']
-    desc = response.json()['progresses'][0]['description']
-    loca = response.json()['progresses'][0]['location']['name']
+    r = requests.get('https://apis.tracker.delivery/carriers/'+ca+'/tracks/'+number_receive)
+    result = r.json()
+    print(result)
+
+    date = result['progresses'][-1]['time'][:10]
+    time = result['progresses'][-1]['time'][11:16]
+    location = result['progresses'][-1]['location']['name']
+    status = result['progresses'][-1]['status']['text']
+    desc = result['progresses'][-1]['description']
 
     doc = {
-        'carrier': carrier,
-        'number': number,
+        'carrier': carrier_receive,
+        'number': number_receive,
+        'date': date,
+        'time': time,
+        'location': location,
         'status': status,
-        'desc': desc,
-        'loca': loca
+        'desc': desc
     }
+    db.carrierState.insert_one(doc)
 
-    db.carriers.insert_one(doc)
-
-    return jsonify({'msg': '등록 완료!'})
-
+    return jsonify({'msg':'등록 완료!'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
