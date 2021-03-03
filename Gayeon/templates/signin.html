@@ -1,0 +1,12 @@
+
+<h2>회원가입 페이지</h2>
+<form action="{{ url_for("signin_done")}}" method="get">
+    <p>nick? or name:</p>
+    <input type="text" id="name" name="name">
+    <p>userid:</p>
+    <input type="text" id="id" name="id">
+    <p>password:</p>
+    <input type="password" id="Pw" name="Pw">
+    <button type="submit">회원가입하기</button>
+</form>
+    <a href="{{ url_for("login") }}">로그인하러 가기</a>
