@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+    <head>
+
+        <title>보자보자보자보자보자</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <style>
+            .is-sub {
+                margin-top: 20px !important;
+                font-size: 18px;
+            }
+
+            .blabla {
+                margin: 20px;
+            }
+
+            .button {
+                margin: 20px 0 30px;
+            }
+
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+        <script>
+
+        </script>
+
+    </head>
+    <body>
+        {# 벌마 시작    #}
+        <section class="hero is-info">
+          <div class="hero-body">
+            <p class="title">보자보자 서비스</p>
+
+            <p class="subtitle is-sub">택배 어쩌고~</p>
+          </div>
+        </section>
+        {# 벌마 끝 #}
+
+        <h1 class="blabla">로그인 후 들어오게 되는 마이 택배 리스트 페이지 입니다.</h1>
+
+        <div class="button">
+            <button>registration 버튼입니다.</button>
+        </div>
+
+        <div class="carrier-total-amount">
+            <h2>배송중인 택배 : 2</h2>
+        </div>
+
+        <div class="carrier-state">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col" class="table-order">#</th>
+                    <th scope="col" class="table-carrier">택배사<br>/송장번호</th>
+                    <th scope="col" class="table-time">배송시간</th>
+                    <th scope="col" class="table-location">상품위치</th>
+                    <th scope="col" class="table-status">배송상태</th>
+                </tr>
+                </thead>
+
+                <tbody id="regis-list">
+                <tr>
+                    <th scope="row">1</th>
+                    <td>대한통운<br>
+                        <p class="number">32412341</p></td>
+                    <td>시간결과<br></td>
+                    <td>어디센터</td>
+                    <td>인수<br>
+                        <p class="desc">고객님~~상품인수</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </body>
+</html>

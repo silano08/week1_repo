@@ -1,9 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        {% if title %}
-        <title>{{title}}</title>
-        {% endif %}
+        <title>보자보자 운송장 서비스</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -97,9 +95,12 @@
                     },
                     success: function (response) {
                         if (response['result'] == 'success') {
-                            $.cookie('mytoken', response['token'], {path: '/'});
+                            $.cookie('mytoken', response['token'], {path: '/'});    // 전체사이트에 대해 쿠키 만들기
+                            {#console.log($.cookie('mytoken').value());#}
+
                             alert(response['msg']);
-                            window.location.replace("/"); // 조회 페이지로 이동(추후에 루트 바꿔야 됨)
+                            {#window.location.replace("/"); // 조회 페이지로 이동(추후에 루트 바꿔야 됨)#}
+                            window.location.href="/show_mylist"
 
                         } else {
                             alert(response['msg']);
@@ -120,13 +121,9 @@
 
         <section class="hero is-info">
           <div class="hero-body">
-            {% if title %}
-            <p class="title">{{ title }}</p>
-            {% endif %}
+            <p class="title">보자보자 운송장 서비스</p>
 
-            {% if subtitle %}
-            <p class="subtitle is-sub">{{ subtitle }}</p>
-            {% endif %}
+            <p class="subtitle is-sub">내 운송장을 한꺼번에 모아 보세요.</p>
           </div>
         </section>
 

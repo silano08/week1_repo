@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-SECRET_KEY = 'SPARTA'
+SECRET_KEY = 'SPARTA'   # 우리 팀 걸로 설정 맞추기.
 
 client = MongoClient('localhost', 27017)
 db = client.dbsparta_team_project01
@@ -17,16 +17,17 @@ db = client.dbsparta_team_project01
 # html파일 불러오기
 @app.route('/')
 def home():
-    return render_template(
-        'index.html',
-        title = '보자보자 운송장 서비스',
-        subtitle = '내 운송장을 한꺼번에 모아 보세요.'
-    )
+    return render_template('index.html')
 
 # 회원가입 페이지 불러오기
 @app.route('/sign_up')
 def sign_up():
     return render_template('signup.html')
+
+# 택배조회 페이지 불러오기
+@app.route('/show_mylist')
+def show_mylist():
+    return render_template('mylist.html')
 
 # 회원가입
 @app.route('/sign_up/register', methods=['POST'])
@@ -49,6 +50,8 @@ def register():
 def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
+    print(db.users.find_one({"username": username_receive}))
+    print(bool(db.users.find_one({"username": username_receive})))
     return jsonify({'result': 'success', 'exists': exists})
 
 
@@ -72,8 +75,7 @@ def sign_in():
             # 24시간 동안 로그인 유지할 수 있게 하는 유효기간 설정
             'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
         }
-        # payload를 시크릿키로 감싸서 암호화 한 다음에 token 발행.
-        # id, 유효기간, 시크릿 키를 ???
+        # 클라이언트에게 토큰 전달
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token, 'msg': '로그인 성공!'})
