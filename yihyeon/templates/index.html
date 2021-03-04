@@ -11,13 +11,27 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
         <style>
-            .is-sub {
-                margin-top: 20px !important;
-                font-size: 18px;
+
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                font-family: 'Noto Sans KR', sans-serif;
+            }
+
+            .hero {
+                grid-area: up;
+                background-color: white;
+                border-radius: 8px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+                margin-bottom: 50px;
             }
 
             .wrap-form {
-                width: 600px;
+                width: 400px;
                 height: 350px;
                 margin: 100px auto;
                 border: 1px solid #8598cd;
@@ -26,14 +40,9 @@
                 background-color: white;
             }
 
-            .control {
-                width: 500px;
-                margin: 10px auto;
-            }
-
             .sign-in-button, .sign-up-button {
                 display: block;
-                width: 500px;
+                width: 300px;
                 height: 35px;
                 margin: 30px auto;
                 color: white;
@@ -51,6 +60,11 @@
                 text-align: center;
                 font-size: 15px;
                 padding: 7px;
+            }
+
+            .control {
+                width: 300px;
+                margin: 10px auto;
             }
 
             .condition {
@@ -118,16 +132,16 @@
 
     </head>
     <body>
-
-        <section class="hero is-info">
-          <div class="hero-body">
-            <p class="title">보자보자 운송장 서비스</p>
-
-            <p class="subtitle is-sub">내 운송장을 한꺼번에 모아 보세요.</p>
-          </div>
+        <section class="hero">
+            <div class="hero-body">
+                <p class="title">
+                    보자보자 운송장 서비스!
+                </p>
+                <p class="subtitle">
+                    회원이 되어 운송장을 편하게 관리하세요!
+                </p>
+            </div>
         </section>
-
-
         <div id="first-form" class="wrap-form">
             <div class="control">
                 <input id="input-username" class="input" type="text" name="userid" placeholder="id">
@@ -143,6 +157,5 @@
             <button class="sign-in-button" onclick="sign_in()">로그인</button>
             <button class="sign-up-button" onclick="sign_up()">회원가입</button>
         </div>
-
     </body>
 </html>

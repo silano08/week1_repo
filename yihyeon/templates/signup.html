@@ -11,14 +11,33 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <style>
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
         .is-sub {
             margin-top: 20px !important;
             font-size: 18px;
         }
 
+        .hero{
+            grid-area: up;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.2);
+            margin-bottom: 50px;
+        }
+
         .wrap-form {
-            width: 600px;
-            height: 350px;
+            width: 400px;
+            height: 430px;
             margin: 100px auto;
             border: 1px solid #8598cd;
             padding: 30px;
@@ -31,13 +50,13 @@
         }
 
         .control {
-            width: 500px;
+            width: 300px;
             margin: 10px auto;
         }
 
         #input-username {
             display: inline-block;
-            width: 413px;
+            width: 213px;
             border-radius: 4px 0 0 4px;
         }
 
@@ -52,9 +71,9 @@
         }
 
         .register-button, .cancel-button {
-            width: 250px;
+            width:  300px;
             height: 35px;
-            margin: 30px auto;
+            margin: 10px auto;
             color: white;
             background-color: #476ad5;
             font-weight: bold;
@@ -203,21 +222,20 @@
 
 </head>
 <body>
-<section class="hero is-info">
+<section class="hero">
     <div class="hero-body">
         <p class="title">
-            보자보자 운송장 서비스
+            보자보자 운송장 서비스!
         </p>
-        <p class="subtitle is-sub">
-            내 운송장을 한꺼번에 모아 보세요.
+        <p class="subtitle">
+            회원이 되어 운송장을 편하게 관리하세요!
         </p>
     </div>
 </section>
-
 <div class="wrap-form">
     <div class="control">
         <input id="input-username" class="input" type="text" placeholder="id">
-        <button class="check-username" onclick="check_dup()">중복확인</button>
+        <button class="check-username" nclick="check_dup()">중복확인</button>
     </div>
     <p id="username-requirement" class="requirement">아이디는 6-12자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
 

@@ -35,6 +35,7 @@ def sign_up():
 
 @app.route('/show_mylist')
 def show_mylist():
+
     # 토큰 꺼내오기
     token_receive = request.cookies.get('mytoken')
 
@@ -122,6 +123,7 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디나 비밀번호가 맞지 않습니다. 다시 확인해주세요.'})
 
+
 # 포스팅
 @app.route('/regis', methods=['POST'])
 def regis():
@@ -171,39 +173,36 @@ def regis():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("index"))
 
-# # 배송 상품 등록
-# @app.route('/regis', methods=['POST'])
-# def saving():
-#     carrier_receive = request.form['carrier_give']
-#     number_receive = request.form['number_give']
-#
-#     carrierCode = db.carriersCode.find_one(
-#         {'name': carrier_receive}, {'_id': False})
-#     ca = carrierCode['nameCode']
-#
-#     r = requests.get('https://apis.tracker.delivery/carriers/' +
-#                      ca+'/tracks/'+number_receive)
-#     result = r.json()
-#     print(result)
-#
-#     date = result['progresses'][-1]['time'][:10]
-#     time = result['progresses'][-1]['time'][11:16]
-#     location = result['progresses'][-1]['location']['name']
-#     status = result['progresses'][-1]['status']['text']
-#     desc = result['progresses'][-1]['description']
-#
-#     doc = {
-#         'carrier': carrier_receive,
-#         'number': number_receive,
-#         'date': date,
-#         'time': time,
-#         'location': location,
-#         'status': status,
-#         'desc': desc
-#     }
-#     db.carrierState.insert_one(doc)
-#
-#     return jsonify({'msg': '등록 완료!'})
+
+# 배송중인 택배 총 건수
+# @app.route('/get_amount', methods=['GET'])
+# def get_amount():
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         users = list(db.useruser.find({}).sort("date", -1).sort("time", -1))
+#         print(users)
+#         for user in users:
+#             user["_id"] = str(user["_id"])
+#         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "users": users})
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("index"))
+#     return jsonify({'msg':'GET 연결되었습니다!'})
+
+
+# 포스트 요청하여 브라우저에 보여주기
+@app.route("/get_regis", methods=['GET'])
+def get_regis():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        users = list(db.useruser.find({"username": payload["id"]}).sort("date", -1).sort("time", -1))
+        print(users)
+        for user in users:
+            user["_id"] = str(user["_id"])
+        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "users": users})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("index"))
 
 
 
