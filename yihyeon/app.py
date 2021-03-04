@@ -13,7 +13,8 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 SECRET_KEY = 'SPARTA'   # 우리 팀 걸로 설정 맞추기.
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
+# client = MongoClient('localhost', 27017)
 db = client.dbsparta_team_project01
 
 
