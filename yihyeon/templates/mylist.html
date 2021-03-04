@@ -199,11 +199,10 @@
         }
 
         .side .user-info {
-
             border-radius: 6px;
             width: 180px;
             height: 270px;
-
+            margin-bottom: 40px;
         }
         .side .user-info img {
             background-image: url('https://icons-for-free.com/iconfiles/png/512/facebook+profile+user+profile+icon-1320184041317225686.png');
@@ -224,7 +223,6 @@
             font-weight: 500;
         }
         .side .btn-info {
-
             display: block;
             width: 150px;
             height: 35px;
@@ -233,16 +231,15 @@
             color: white;
             font-size: 14.5px;
             /* background: linear-gradient(to bottom right, rgb(64, 213, 250), rgb(78, 197, 212)); */
-            background: linear-gradient(to bottom right, rgb(114, 185, 255), rgb(122, 165, 245));
+            background: linear-gradient(to bottom right, rgb(139, 180, 255), rgb(116, 165, 248));
         }
 
         .table {
             margin: 0 80px;
-            width: 100%;
+            width: 800px;
             height: 200px;
             border-top: 1px solid #444444;
             border-collapse: collapse;
-
             text-align: center;
         }
 
@@ -286,13 +283,24 @@
             font-weight: 400;
             color: black;
         }
-
+        .user-info .btn-logout {
+            margin: 14px auto;
+            display: block;
+            width: 70px;
+            height: 21px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 11px;
+            /* background: linear-gradient(to bottom right, rgb(64, 213, 250), rgb(78, 197, 212)); */
+            background: linear-gradient(to bottom right, rgb(255, 135, 114), rgb(236, 107, 90));
+        }
 
 
     </style>
     <script>
         $(document).ready(function () {
-            // showList();
+             showList();
         });
 
         function regis() {
@@ -305,7 +313,7 @@
                     data: {carrier_give: carrier, number_give: number},
                     success: function (response) { // 성공하면
                         alert(response["msg"]);
-                        window.location.href="/";
+                        window.location.reload();
                     }
                 })
             }
@@ -352,6 +360,7 @@
                         <p>{{ user_info }}</p>
                         {% endif %}
                     </div>
+                    <button onclick="" type="button" class="btn btn-logout">로그아웃</button>
                 </div>
                 <div class="registration">
                     <div id="post-box" class="form-post" style="">

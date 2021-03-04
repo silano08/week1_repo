@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import requests
 import jwt
 import datetime
 import hashlib
@@ -120,6 +121,90 @@ def sign_in():
     # 회원이 아닌 경우(아이디나 비밀번호를 잘못 입력 했을 때)
     else:
         return jsonify({'result': 'fail', 'msg': '아이디나 비밀번호가 맞지 않습니다. 다시 확인해주세요.'})
+
+# 포스팅
+@app.route('/regis', methods=['POST'])
+def regis():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})["username"]
+        carrier_receive = request.form["carrier_give"]
+        number_receive = request.form["number_give"]
+
+        carrierCode = db.carriersCode.find_one(
+            {'name': carrier_receive}, {'_id': False})
+        ca = carrierCode['nameCode']
+
+        r = requests.get('https://apis.tracker.delivery/carriers/' +
+                         ca+'/tracks/'+number_receive)
+        result = r.json()
+        print(result)
+
+        date = result['progresses'][-1]['time'][:10]
+        time = result['progresses'][-1]['time'][11:16]
+        location = result['progresses'][-1]['location']['name']
+        status = result['progresses'][-1]['status']['text']
+        desc = result['progresses'][-1]['description']
+
+        doc = {
+            "username": user_info,
+            'carrier': carrier_receive,
+            'number': number_receive,
+            'date': date,
+            'time': time,
+            'location': location,
+            'status': status,
+            'desc': desc
+        }
+
+        # doc = {
+        #     "username": user_info["username"],
+        #     "profile_name": user_info["profile_name"],
+        #     "profile_pic_real": user_info["profile_pic_real"],
+        #     "carrier": carrier_receive,
+        #     "number": number_receive
+        # }
+
+        db.useruser.insert_one(doc)
+        return jsonify({"result": "success", 'msg': '등록 성공'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("index"))
+
+# # 배송 상품 등록
+# @app.route('/regis', methods=['POST'])
+# def saving():
+#     carrier_receive = request.form['carrier_give']
+#     number_receive = request.form['number_give']
+#
+#     carrierCode = db.carriersCode.find_one(
+#         {'name': carrier_receive}, {'_id': False})
+#     ca = carrierCode['nameCode']
+#
+#     r = requests.get('https://apis.tracker.delivery/carriers/' +
+#                      ca+'/tracks/'+number_receive)
+#     result = r.json()
+#     print(result)
+#
+#     date = result['progresses'][-1]['time'][:10]
+#     time = result['progresses'][-1]['time'][11:16]
+#     location = result['progresses'][-1]['location']['name']
+#     status = result['progresses'][-1]['status']['text']
+#     desc = result['progresses'][-1]['description']
+#
+#     doc = {
+#         'carrier': carrier_receive,
+#         'number': number_receive,
+#         'date': date,
+#         'time': time,
+#         'location': location,
+#         'status': status,
+#         'desc': desc
+#     }
+#     db.carrierState.insert_one(doc)
+#
+#     return jsonify({'msg': '등록 완료!'})
+
 
 
 if __name__ == '__main__':
